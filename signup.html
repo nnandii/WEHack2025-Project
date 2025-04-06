@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up - SAVEYOURSTACK</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+      :root {
+        --purple: #62fff5;
+        --dark-blue: #163342;
+        --white: #fff9f9;
+        --gold: #00f2ff;
+      }
+
+      body {
+        font-family: "Press Start 2P", sans-serif;
+        background-color: var(--dark-blue);
+        color: var(--white);
+        padding: 20px;
+        margin: 0;
+      }
+
+      .signup-container {
+        max-width: 400px;
+        margin: 50px auto;
+        text-align: center;
+      }
+
+      h1 {
+        color: var(--gold);
+        font-size: 30px;
+        margin-bottom: 10px;
+      }
+
+      h2 {
+        color: var(--white);
+        font-size: 15px;
+        margin-bottom: 30px;
+      }
+
+      .signup-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      input {
+        padding: 12px;
+        border-radius: 5px;
+        border: 2px solid var(--purple);
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      button {
+        background-color: var(--purple);
+        color: var(--dark-blue);
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      .login-link {
+        margin-top: 20px;
+        color: var(--white);
+      }
+
+      .login-link a {
+        color: var(--gold);
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="signup-container">
+      <h1>SAVEYOURSTACK</h1>
+      <h2>Create Your Account</h2>
+      <form class="signup-form">
+        <input type="text" placeholder="Username" required />
+        <input type="email" placeholder="Email" required />
+        <input type="password" placeholder="Password" required />
+        <button
+          type="submit"
+          onclick="window.location.href='welcomepage.html';"
+        >
+          Start Saving!
+        </button>
+      </form>
+      <p class="login-link">
+        Already have an account? <br /><br />
+        <a href="index.html">Log in</a>
+      </p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to SAVEYOURSTACK!</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+      :root {
+        --purple: #62fff5;
+        --dark-blue: #163342;
+        --white: #fff9f9;
+        --gold: #00f2ff;
+      }
+
+      body {
+        font-family: "Press Start 2P", sans-serif;
+        background-color: var(--dark-blue);
+        color: var(--white);
+        padding: 20px;
+        margin: 0;
+      }
+
+      .signup-container {
+        max-width: 400px;
+        margin: 50px auto;
+        text-align: center;
+      }
+
+      h1 {
+        color: var(--gold);
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      h2 {
+        color: var(--white);
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+      }
+
+      .form-group {
+        margin: 30px 0;
+        padding: 15px;
+        border: 2px solid var(--purple);
+        border-radius: 8px;
+      }
+
+      .input-group {
+        margin: 20px 0;
+      }
+
+      label {
+        display: block;
+        margin: 10px 0;
+        font-size: 0.8rem;
+      }
+
+      input,
+      select {
+        padding: 12px;
+        border-radius: 5px;
+        border: 2px solid var(--purple);
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+        width: 80%;
+      }
+
+      output {
+        display: block;
+        padding: 12px;
+        margin: 15px auto;
+        width: 80%;
+        background-color: rgba(98, 255, 245, 0.1);
+        border: 2px solid var(--purple);
+        border-radius: 5px;
+      }
+
+      button {
+        background-color: var(--purple);
+        color: var(--dark-blue);
+        padding: 12px 25px;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 10px;
+      }
+
+      .button-group {
+        margin: 30px 0;
+      }
+
+      .login-link {
+        margin-top: 20px;
+        color: var(--white);
+      }
+
+      .login-link a {
+        color: var(--gold);
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="signup-container">
+      <h1>Welcome to SAVEYOURSTACK!</h1>
+
+      <div class="form-group">
+        <h2>What is SAVEYOURSTACK?</h2>
+        <p>
+          SAVEYOURSTACK is here to support your financial goals in a fun and
+          simple way. <br />
+          <br />
+          Please enter the following information so we can create the perfect
+          financial plan for your needs:
+        </p>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          <h4>What's your monthly spending limit?</h4>
+          <label for="budget">Monthly Budget</label>
+          <input
+            type="number"
+            id="budget"
+            placeholder="e.g. 1000"
+            min="0"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <h4>Choose a savings rate plan to calculate annual savings:</h4>
+          <label for="plan">Monthly Savings Plan</label>
+          <select id="savings-rate">
+            <option value="5">5%</option>
+            <option value="10">10%</option>
+            <option value="15">15%</option>
+            <option value="20" selected>20% (recommended)</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="savings"
+            >Your yearly savings on this plan would be:</label
+          >
+          <output id="savings">$0</output>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button id="edit-plan">Edit Plan</button>
+        <button id="get-started">Get Started</button>
+      </div>
+
+      <div class="login-link">
+        Already have an account?
+        <br />
+        <br />
+        <a href="#">Log In</a>
+      </div>
+    </div>
+
+    <script>
+      // Get DOM elements
+      const budgetInput = document.getElementById("budget");
+      const savingsRateSelect = document.getElementById("savings-rate");
+      const savingsOutput = document.getElementById("savings");
+      const editPlanBtn = document.getElementById("edit-plan");
+      const getStartedBtn = document.getElementById("get-started");
+
+      // Function to calculate yearly savings
+      function calculateSavings() {
+        const budget = parseFloat(budgetInput.value) || 0;
+        const savingsRate = parseInt(savingsRateSelect.value) || 0;
+
+        // Calculate monthly savings and then yearly (12 months)
+        const yearlySavings = budget * (savingsRate / 100) * 12;
+
+        // Format as currency
+        savingsOutput.textContent = yearlySavings.toLocaleString("en-US", {
+          style: "currency",
+          currency: "USD",
+          maximumFractionDigits: 0,
+        });
+      }
+
+      // Event listeners for real-time calculation
+      budgetInput.addEventListener("input", calculateSavings);
+      savingsRateSelect.addEventListener("change", calculateSavings);
+
+      // Button functionality
+      editPlanBtn.addEventListener("click", () => {
+        budgetInput.value = "";
+        savingsRateSelect.value = "20";
+        savingsOutput.textContent = "$0";
+        budgetInput.focus();
+      });
+
+      getStartedBtn.addEventListener("click", () => {
+        if (!budgetInput.value) {
+          alert("Please enter your monthly budget first!");
+          budgetInput.focus();
+          return;
+        }
+        // Redirect to index.html
+        window.location.href = "index.html";
+      });
+
+      // Initial calculation if default values exist
+      calculateSavings();
+    </script>
+  </body>
+</html>

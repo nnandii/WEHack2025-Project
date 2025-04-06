@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SAVEYOURSTACK</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+      /* Simple Colors */
+      :root {
+        --purple: #4ed6cc;
+        --light-purple: #a0e7e5;
+        --dark-blue: #163342;
+        --gray-purple: #bcf6f1;
+        --light-gray: #3f7a88;
+        --white: #fff9f9;
+        --gold: #00eeff;
+        --pink: #ff5ef7;
+      }
+
+      body {
+        font-family: "press start 2P", sans-serif;
+        font-size: 15px;
+        background-color: var(--dark-blue);
+        color: var(--white);
+        padding: 20px;
+      }
+
+      .app {
+        max-width: 2000px;
+        margin: 0 auto;
+        background-color: var(--gray-purple);
+        padding: 20px;
+        border-radius: 10px;
+        border: 3px solid var(--purple);
+      }
+
+      /* NEW HEADER STYLES */
+      .game-header {
+        text-align: center;
+        color: var(--gold);
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 0 var(--dark-blue);
+      }
+
+      /* NEW COLUMN STYLES */
+      .columns {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 15px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .column .section {
+        margin-bottom: 0;
+        height: 100%;
+      }
+
+      .avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background-color: var(--light-gray);
+        margin: 0 auto;
+        border: 3px solid var(--gold);
+      }
+
+      /* MAIN DASHBOARD STYLES */
+      .main-dashboard {
+        background-color: var(--dark-blue);
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border: 2px solid var(--purple);
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      .dashboard-card {
+        flex: 1;
+        min-width: 150px;
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        border: 1px solid var(--purple);
+      }
+
+      .dashboard-card h3 {
+        color: var(--gold);
+        margin-top: 0;
+        font-size: 16px;
+      }
+
+      .dashboard-card p {
+        font-size: 24px;
+        margin: 10px 0;
+        color: var(--white);
+      }
+
+      /* GRAPH CONTAINER STYLES */
+      .graph-container {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .graph {
+        flex: 1;
+        background-color: var(--dark-blue);
+        padding: 15px;
+        border-radius: 8px;
+        border: 2px solid var(--purple);
+        text-align: center;
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .graph-placeholder {
+        width: 100%;
+        height: 200px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 2px dashed var(--light-purple);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--light-purple);
+        margin-top: 10px;
+      }
+
+      .graph h3 {
+        color: var(--gold);
+        margin-top: 0;
+      }
+
+      .section {
+        background-color: var(--dark-blue);
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        border: 2px solid var(--purple);
+      }
+
+      h2 {
+        color: var(--purple);
+        margin-bottom: 10px;
+        font-size: 18px;
+      }
+
+      input,
+      select {
+        width: 100%; /* Ensure inputs take full width of their parent */
+        padding: 8px;
+        margin: 5px 0 10px;
+        border-radius: 5px;
+        border: none;
+        box-sizing: border-box; /* Include padding and border in width */
+      }
+
+      button {
+        background-color: var(--purple);
+        color: var(--dark-blue);
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        width: 100%;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .expense-item {
+        padding: 8px 0;
+      }
+
+      .alert-section {
+        background-color: rgba(29, 134, 163, 0.1);
+        border: 2px solid var(--gold);
+      }
+
+      .alert-item {
+        padding: 10px;
+        margin: 10px 0;
+        background-color: rgba(51, 136, 154, 0.2);
+        border-left: 4px solid var(--gold);
+      }
+
+      .savings-jar {
+        text-align: center;
+      }
+
+      .jar-visual {
+        width: 100px;
+        height: 150px;
+        margin: 15px auto;
+        background-color: var(--light-gray);
+        border-radius: 0 0 50px 50px;
+        position: relative;
+        overflow: hidden;
+        border: 3px solid var(--gold);
+      }
+
+      .jar-fill {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background: linear-gradient(to top, var(--gold), var(--pink));
+        height: 35%;
+        transition: height 0.5s ease;
+      }
+
+      .savings-goal-input {
+        margin-top: 15px;
+      }
+
+      /* Responsive design for mobile */
+      @media (max-width: 768px) {
+        .columns {
+          flex-direction: column;
+        }
+        .main-dashboard {
+          flex-direction: column;
+        }
+        .dashboard-card {
+          min-width: 100%;
+        }
+        .graph-container {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav
+      style="
+        font-family: 'Press Start 2P', sans-serif;
+        background-color: #163342;
+        padding: 15px;
+        border-bottom: 2px solid #62fff5;
+      "
+    >
+      <ul
+        style="
+          display: flex;
+          justify-content: space-around;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        "
+      >
+        <li>
+          <a
+            href="welcomepage.html"
+            style="color: #62fff5; text-decoration: none"
+            >Home</a
+          >
+        </li>
+        <li>
+          <a href="signup.html" style="color: #62fff5; text-decoration: none"
+            >Sign Up</a
+          >
+        </li>
+        <li>
+          <a href="#" style="color: #00f2ff; text-decoration: none"
+            >Leaderboard</a
+          >
+        </li>
+        <li>
+          <a href="#" style="color: #00f2ff; text-decoration: none">Badges</a>
+        </li>
+        <li>
+          <a href="#" style="color: #00f2ff; text-decoration: none"
+            >Find Friends</a
+          >
+        </li>
+        <li>
+          <a href="#" style="color: #00f2ff; text-decoration: none">Rewards</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="app">
+      <!-- Header Section -->
+      <div class="game-header">Player Name</div>
+
+      <!-- Avatar Section -->
+      <div class="avatar"></div>
+
+      <!-- Navigation Links -->
+      <p style="text-align: center; margin-top: 20px">
+        <a href="signup.html" style="color: var(--gold)">Create Account</a>
+        <a href="welcomepage.html" style="color: var(--gold); margin-left: 20px"
+          >Welcome!</a
+        >
+      </p>
+
+      <!-- MAIN DASHBOARD -->
+      <div class="main-dashboard">
+        <div class="dashboard-card">
+          <h3>💰 Total Saved</h3>
+          <p>$1250</p>
+        </div>
+        <div class="dashboard-card">
+          <h3>📈 Monthly Saving Goal</h3>
+          <p>$1,000</p>
+        </div>
+        <div class="dashboard-card">
+          <h3>🏆 Current Streak</h3>
+          <p>2 months</p>
+        </div>
+        <div class="dashboard-card">
+          <h3>Monthly Budget</h3>
+          <p>$3,000.00</p>
+        </div>
+      </div>
+
+      <!-- NEW GRAPH SECTION -->
+      <div class="graph-container">
+        <!-- Expense Categories Pie Chart -->
+        <div class="graph">
+          <h3>📊 Expense Categories</h3>
+          <div class="graph-placeholder">
+            [Pie Chart: Food 30%, Shopping 25%, Entertainment 20%, Misc 15%,
+            Transport 10%]
+          </div>
+        </div>
+
+        <!-- Projected Yearly Budget -->
+        <div class="graph">
+          <h3>📈 Projected Yearly Budget</h3>
+          <div class="graph-placeholder">
+            [Bar Chart: Monthly $3,000 → Yearly $36,000]
+          </div>
+        </div>
+      </div>
+
+      <!-- TWO COLUMN LAYOUT -->
+      <div class="columns">
+        <!-- Left Column - Add Expense -->
+        <div class="column">
+          <div class="section">
+            <h2>⚔️ ADD EXPENSE</h2>
+            <input type="text" placeholder="Item name..." />
+            <input type="number" placeholder="$ Amount" />
+            <select>
+              <option>Food</option>
+              <option>Shopping</option>
+              <option>Entertainment</option>
+              <option>Miscellaneous</option>
+              <option>Transportation</option>
+            </select>
+            <button>SUBMIT</button>
+          </div>
+        </div>
+
+        <!-- Right Column - What If -->
+        <div class="column">
+          <div class="section">
+            <h2>🔮 WHAT IF...</h2>
+            <p>
+              Save <input type="number" id="saveAmount" placeholder="$" />
+              on
+              <select id="categorySelect">
+                <option>Food</option>
+                <option>Shopping</option>
+                <option>Entertainment</option>
+                <option>Utilities</option>
+                <option>Miscellaneous</option>
+                <option>Tuition</option>
+                <option>Living Expenses</option>
+                <option>Books and Supplies</option>
+                <option>Transportation</option>
+              </select>
+            </p>
+            <button id="simulateButton">SIMULATE</button>
+            <p id="savingsResult"></p>
+          </div>
+        </div>
+      </div>
+
+      <br />
+      <br />
+
+      <!-- Expense List Section -->
+      <div class="section">
+        <h2>📜 EXPENSE LOG</h2>
+        <div class="expense-item"></div>
+      </div>
+
+      <!-- NEW SECTIONS ADDED BELOW EXISTING CONTENT -->
+      <div class="columns" style="margin-top: 20px">
+        <!-- Impulse Alert System Column -->
+        <div class="column">
+          <div class="section alert-section">
+            <h2>⚠️ Impulse Alerts</h2>
+            <div class="alert-item">
+              <strong></strong>
+              <p></p>
+            </div>
+            <div class="alert-item">
+              <strong></strong>
+              <p></p>
+            </div>
+            <h4>Alert Preferences:</h4>
+            <select>
+              <option>Notify when nearing budget limits</option>
+              <option>Warn about unusual spending</option>
+              <option>Both (recommended)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Savings Jar Column -->
+        <div class="column">
+          <div class="section savings-jar">
+            <h2>💰 Savings Jar</h2>
+            <div class="jar-visual">
+              <div class="jar-fill"></div>
+            </div>
+            <h3></h3>
+            <p></p>
+            <div class="savings-goal-input">
+              <input
+                type="text"
+                placeholder="Goal name"
+                style="margin-bottom: 8px"
+              />
+              <input type="number" placeholder="Target amount ($)" />
+              <input type="number" placeholder="Put away money ($)" />
+              <button style="margin-top: 10px">Update Goal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
